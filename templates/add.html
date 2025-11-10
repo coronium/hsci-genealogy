@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Person</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">← Back to Search</a>
+        </div>
+        
+        <h1>Add Yourself to the Database</h1>
+        <p class="subtitle">If you're not in our database, please add your information here</p>
+        
+        <div class="form-box">
+            <form method="POST" action="{{ url_for('add_person') }}">
+                <div class="form-group">
+                    <label for="user_name">Your Name: *</label>
+                    <input type="text" 
+                           id="user_name" 
+                           name="user_name" 
+                           placeholder="Required - for our records"
+                           required>
+                </div>
+                
+                <hr>
+                
+                <div class="form-group">
+                    <label for="person_name">Full Name: *</label>
+                    <input type="text" 
+                           id="person_name" 
+                           name="person_name" 
+                           placeholder="Your full name as it appears on your dissertation"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="years">Years (birth-death or just birth):</label>
+                    <input type="text" 
+                           id="years" 
+                           name="years" 
+                           placeholder="e.g. 1975- or 1975-2050">
+                </div>
+                
+                <div class="form-group">
+                    <label for="school">University: *</label>
+                    <input type="text" 
+                           id="school" 
+                           name="school" 
+                           list="schools"
+                           placeholder="Where you received/will receive your PhD"
+                           required>
+                    <datalist id="schools"></datalist>
+                </div>
+                
+                <div class="form-group">
+                    <label for="department">Department:</label>
+                    <input type="text" 
+                           id="department" 
+                           name="department" 
+                           placeholder="e.g. History of Science">
+                </div>
+                
+                <div class="form-group">
+                    <label for="title">Dissertation Title:</label>
+                    <textarea id="title" 
+                              name="title" 
+                              rows="3"
+                              placeholder="Full title of your dissertation"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Dissertation Year:</label>
+                    <input type="text" 
+                           id="year" 
+                           name="year" 
+                           placeholder="Year completed or expected year">
+                </div>
+                
+                <div class="form-group">
+                    <label for="advisors">Advisors and Committee Members (please indicate role):</label>
+                    <textarea id="advisors" 
+                              name="advisors" 
+                              rows="4"
+                              placeholder="e.g. John Smith (Advisor), Jane Doe (Committee Member), Bob Johnson (Chair)"></textarea>
+                    <small style="color: #7f8c8d; font-style: italic;">Enter each advisor on a new line with their role in parentheses</small>
+                </div>
+                
+                <button type="submit" class="btn-primary">Add to Database</button>
+            </form>
+        </div>
+        
+        <p class="note">* Your information will be logged and added to the database after the conference.</p>
+    </div>
+    
+    <script>
+        // Load schools for autocomplete
+        fetch('{{ url_for("get_schools") }}')
+            .then(response => response.json())
+            .then(schools => {
+                const datalist = document.getElementById('schools');
+                schools.forEach(school => {
+                    const option = document.createElement('option');
+                    option.value = school;
+                    datalist.appendChild(option);
+                });
+            });
+    </script>
+</body>
+</html>

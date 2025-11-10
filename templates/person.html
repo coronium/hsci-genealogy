@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ person_name }} - Academic Genealogy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">← Back to Search</a>
+        </div>
+        
+        <!-- Advisors Section -->
+        {% if dissertation and dissertation.advisors %}
+        <div class="advisors-section">
+            <h3>Advisors:</h3>
+            {% for advisor in dissertation.advisors %}
+            <div class="advisor-item">
+                {% if advisor.advisor_id %}
+                <a href="{{ url_for('person_detail', person_id=advisor.advisor_id) }}" class="link-item">
+                    {{ advisor.name }}
+                </a>
+                {% else %}
+                <span class="link-item no-link">{{ advisor.name }}</span>
+                {% endif %}
+                <span class="role">({{ advisor.role }})</span>
+            </div>
+            {% endfor %}
+            <div style="margin-top: 15px;">
+                <a href="{{ url_for('edit_person', person_id=person_id) }}" class="btn-add">➕ Add an Advisor</a>
+            </div>
+        </div>
+        <div class="arrow-down">↓</div>
+        {% endif %}
+        
+        <!-- Main Person Card -->
+        <div class="person-card">
+            <h1 class="person-name-large">{{ person_name }}</h1>
+            
+            {% if years != 'Unknown' %}
+            <div class="years">({{ years }})</div>
+            {% endif %}
+            
+            <div class="affiliations-section">
+                {% for aff in affiliations %}
+                <div class="affiliation-item">
+                    {% if aff.student and aff.faculty %}
+                    🎓🏛️
+                    {% elif aff.student %}
+                    🎓
+                    {% elif aff.faculty %}
+                    🏛️
+                    {% endif %}
+                    {{ aff.school }}
+                    {% if aff.year %}
+                    ({{ aff.year }})
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if dissertation %}
+            <div class="dissertation-info">
+                <div class="info-row">
+                    <span class="label">Department:</span>
+                    <span class="value">{{ dissertation.department }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Title:</span>
+                    <span class="value">{{ dissertation.title }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Year:</span>
+                    <span class="value">{{ dissertation.year }}</span>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="action-buttons">
+                <a href="{{ url_for('edit_person', person_id=person_id) }}" class="btn-secondary">Edit This Record</a>
+            </div>
+        </div>
+        
+        <!-- Genealogy Stats -->
+        {% if direct_students > 0 %}
+        <div class="stats-section">
+            <h3>Academic Lineage Statistics:</h3>
+            <ul>
+                <li><strong>{{ direct_students }}</strong> direct student{{ 's' if direct_students != 1 else '' }}</li>
+                <li><strong>{{ total_descendants }}</strong> total descendant{{ 's' if total_descendants != 1 else '' }}</li>
+                <li><strong>{{ max_generations }}</strong> generation{{ 's' if max_generations != 1 else '' }} deep</li>
+            </ul>
+        </div>
+        {% endif %}
+        
+        <!-- Students Section -->
+        {% if students %}
+        <div class="arrow-down">↓</div>
+        <div class="students-section">
+            <h3>Students:</h3>
+            {% for student in students %}
+            <div class="student-item">
+                <a href="{{ url_for('person_detail', person_id=student.student_id) }}" class="link-item">
+                    {{ student.name }}
+                </a>
+                <span class="details">
+                    ({{ student.school }}, {{ student.year }})
+                </span>
+            </div>
+            {% endfor %}
+            <div style="margin-top: 15px;">
+                <a href="{{ url_for('edit_person', person_id=person_id) }}" class="btn-add">➕ Add a Student</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="no-students">
+            <p>No known students in database</p>
+            <a href="{{ url_for('edit_person', person_id=person_id) }}" class="btn-add">➕ Add a Student</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Genealogy Explorer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>IsisCB Academic Genealogy Explorer</h1>
+        <p class="subtitle">History of Science Dissertation Database</p>
+        
+        <div class="search-box">
+            <form method="POST" action="{{ url_for('search') }}">
+                <div class="form-group">
+                    <label for="name_search">Search by Name:</label>
+                    <input type="text" 
+                           id="name_search" 
+                           name="name_search" 
+                           placeholder="Enter author or advisor name"
+                           value="{{ name_query or '' }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="school_search">Search by University:</label>
+                    <input type="text" 
+                           id="school_search" 
+                           name="school_search" 
+                           list="schools" 
+                           placeholder="Start typing university name..."
+                           value="{{ school_query or '' }}">
+                    <datalist id="schools"></datalist>
+                </div>
+                
+                <button type="submit" class="btn-primary">Search</button>
+            </form>
+            
+            <div class="add-new-link">
+                <a href="{{ url_for('add_person') }}">➕ Add yourself if not in database</a>
+            </div>
+        </div>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        {% if results %}
+        <div class="results">
+            <h2>Search Results ({{ results|length }} found)</h2>
+            
+            {% for person in results %}
+            <div class="result-item">
+                <a href="{{ url_for('person_detail', person_id=person.person_id) }}" class="person-link">
+                    <div class="person-name">{{ person.name }}</div>
+                    {% if person.years %}
+                    <div class="person-years">({{ person.years }})</div>
+                    {% endif %}
+                </a>
+                
+                <div class="affiliations">
+                    {% for aff in person.affiliations %}
+                    <div class="affiliation">
+                        {% if aff.student and aff.faculty %}
+                        🎓🏛️
+                        {% elif aff.student %}
+                        🎓
+                        {% elif aff.faculty %}
+                        🏛️
+                        {% endif %}
+                        {{ aff.school }}
+                        {% if aff.year %}
+                        ({{ aff.year }})
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    
+    <script>
+        // Load schools for autocomplete
+        fetch('{{ url_for("get_schools") }}')
+            .then(response => response.json())
+            .then(schools => {
+                const datalist = document.getElementById('schools');
+                schools.forEach(school => {
+                    const option = document.createElement('option');
+                    option.value = school;
+                    datalist.appendChild(option);
+                });
+            });
+    </script>
+</body>
+</html>
