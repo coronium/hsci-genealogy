@@ -12,8 +12,8 @@
             <a href="{{ url_for('person_detail', person_id=person_id) }}">← Back to {{ person_name }}</a>
         </div>
         
-        <h1>Edit Information</h1>
-        <p class="subtitle">Update or correct details for {{ person_name }}</p>
+        <h1>{{ person_name }}</h1>
+        <h1 class="subtitle">Update or correct details</h1>
         
         <div class="disclaimer-box">
             <strong>⚠️ Important:</strong> All changes will be logged for review and future integration into the database. Your corrections help improve the accuracy of our records.
@@ -22,7 +22,7 @@
         <div class="form-box">
             <form method="POST" action="{{ url_for('edit_person', person_id=person_id) }}">
                 <div class="form-group">
-                    <label for="user_name">Your Name: *</label>
+                    <label for="user_name">Your name and email: *</label>
                     <input type="text" 
                            id="user_name" 
                            name="user_name" 
@@ -33,7 +33,7 @@
                 <hr>
                 
                 <div class="form-group">
-                    <label for="person_name">Person's Name:</label>
+                    <label for="person_name">Dissertation author's name:</label>
                     <input type="text" 
                            id="person_name" 
                            name="person_name" 
@@ -41,7 +41,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="years">Years (birth-death):</label>
+                    <label for="years">Author birth-death dates if known:</label>
                     <input type="text" 
                            id="years" 
                            name="years" 
@@ -88,8 +88,27 @@
                               name="advisors" 
                               rows="4"
                               placeholder="e.g. John Smith (Advisor), Jane Doe (Committee Member), Bob Johnson (Chair)"></textarea>
-                    <small style="color: #7f8c8d; font-style: italic;">Enter each advisor on a new line with their role in parentheses</small>
+
                 </div>
+
+                <div class="form-group">
+                    <label for="students">Students:</label>
+                    <textarea id="advisors" 
+                              name="advisors" 
+                              rows="4"
+                              placeholder="Provide any known information about the students of this person"></textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="other">Other:</label>
+                    <textarea id="advisors" 
+                              name="advisors" 
+                              rows="4"
+                              placeholder="Any additional information you would like to share"></textarea>
+
+                </div>
+
                 {% else %}
                 <div class="form-group">
                     <label for="school">University:</label>
@@ -120,14 +139,33 @@
                            placeholder="e.g. 1950">
                 </div>
                 
-                <div class="form-group">
+               <div class="form-group">
                     <label for="advisors">Advisors and Committee Members (please indicate role):</label>
                     <textarea id="advisors" 
                               name="advisors" 
                               rows="4"
                               placeholder="e.g. John Smith (Advisor), Jane Doe (Committee Member), Bob Johnson (Chair)"></textarea>
-                    <small style="color: #7f8c8d; font-style: italic;">Enter each advisor on a new line with their role in parentheses</small>
+
                 </div>
+
+                <div class="form-group">
+                    <label for="studentss">Students:</label>
+                    <textarea id="advisors" 
+                              name="advisors" 
+                              rows="4"
+                              placeholder="Provide any known information about the students of this person"></textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="other">Other:</label>
+                    <textarea id="advisors" 
+                              name="advisors" 
+                              rows="4"
+                              placeholder="Any additional information you would like to share"></textarea>
+
+                </div>
+
                 {% endif %}
                 
                 <button type="submit" class="btn-primary">Save Changes</button>
