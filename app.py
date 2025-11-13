@@ -8,7 +8,7 @@ import sqlite3
 import csv
 import os
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
 import unicodedata
 import re
 
@@ -712,8 +712,6 @@ def add_person():
 @app.route('/admin/download-corrections')
 def download_corrections():
     """Download the corrections log file. Hidden admin endpoint."""
-    from flask import send_file
-    
     if not os.path.exists(CORRECTIONS_LOG):
         return "No corrections log found", 404
     
@@ -725,10 +723,11 @@ def download_corrections():
     )
 
 
+# Initialize database when module loads (works with both gunicorn and direct run)
+init_database()
+
+
 if __name__ == '__main__':
-    # Initialize database on startup (only if doesn't exist)
-    init_database()
-    
     # Get port from environment variable (for deployment) or use 5001 for local
     port = int(os.environ.get('PORT', 5001))
     
