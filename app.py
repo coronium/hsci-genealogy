@@ -408,30 +408,50 @@ def search():
         name_parts = [part.strip() for part in name_normalized.split() if part.strip()]
         
         if name_parts:
-            # Build query to match all parts (in any order)
-            where_clauses = []
-            params = []
-            for part in name_parts:
-                where_clauses.append('name_normalized LIKE ?')
-                params.append(f'%{part}%')
-            
-            query = f'''
-                SELECT person_id, name, years
-                FROM people
-                WHERE {' AND '.join(where_clauses)}
-                ORDER BY name
-            '''
-            
-            c.execute(query, params)
-            
-            for person_id, name, years in c.fetchall():
-                affiliations = get_person_affiliations(person_id)
-                results.append({
-                    'person_id': person_id,
-                    'name': name,
-                    'years': years,
-                    'affiliations': affiliations
-                })
+            try:
+                # Build query to match all parts (in any order)
+                where_clauses = []
+                params = []
+                for part in name_parts:
+                    where_clauses.append('name_normalized LIKE ?')
+                    params.append(f'%{part}%')
+                
+                query = f'''
+                    SELECT person_id, name, years
+                    FROM people
+                    WHERE {' AND '.join(where_clauses)}
+                    ORDER BY name
+                '''
+                
+                c.execute(query, tuple(params))
+                
+                for person_id, name, years in c.fetchall():
+                    affiliations = get_person_affiliations(person_id)
+                    results.append({
+                        'person_id': person_id,
+                        'name': name,
+                        'years': years,
+                        'affiliations': affiliations
+                    })
+            except Exception as e:
+                # Log error and fall back to simple search
+                print(f"Search error: {e}")
+                # Fallback to original simple search
+                c.execute('''
+                    SELECT person_id, name, years
+                    FROM people
+                    WHERE name_normalized LIKE ?
+                    ORDER BY name
+                ''', (f'%{name_normalized}%',))
+                
+                for person_id, name, years in c.fetchall():
+                    affiliations = get_person_affiliations(person_id)
+                    results.append({
+                        'person_id': person_id,
+                        'name': name,
+                        'years': years,
+                        'affiliations': affiliations
+                    })
     
     elif school_query:
         # Search by university - get all people associated with that school
