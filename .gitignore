@@ -32,6 +32,7 @@ data/genealogy.db
 data/corrections_log.csv
 
 # Keep data directory structure but not the files
+!data/dissertations.csv
 !data/.gitkeep
 
 # IDE

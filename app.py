@@ -401,23 +401,37 @@ def search():
     results = []
     
     if name_query:
-        # Search by name
+        # Search by name - split into parts to match "Ronald Numbers" with "Numbers, Ronald"
         name_normalized = normalize_search_text(name_query)
-        c.execute('''
-            SELECT person_id, name, years
-            FROM people
-            WHERE name_normalized LIKE ?
-            ORDER BY name
-        ''', (f'%{name_normalized}%',))
         
-        for person_id, name, years in c.fetchall():
-            affiliations = get_person_affiliations(person_id)
-            results.append({
-                'person_id': person_id,
-                'name': name,
-                'years': years,
-                'affiliations': affiliations
-            })
+        # Split into individual words and filter out empty strings
+        name_parts = [part.strip() for part in name_normalized.split() if part.strip()]
+        
+        if name_parts:
+            # Build query to match all parts (in any order)
+            where_clauses = []
+            params = []
+            for part in name_parts:
+                where_clauses.append('name_normalized LIKE ?')
+                params.append(f'%{part}%')
+            
+            query = f'''
+                SELECT person_id, name, years
+                FROM people
+                WHERE {' AND '.join(where_clauses)}
+                ORDER BY name
+            '''
+            
+            c.execute(query, params)
+            
+            for person_id, name, years in c.fetchall():
+                affiliations = get_person_affiliations(person_id)
+                results.append({
+                    'person_id': person_id,
+                    'name': name,
+                    'years': years,
+                    'affiliations': affiliations
+                })
     
     elif school_query:
         # Search by university - get all people associated with that school
@@ -673,6 +687,22 @@ def add_person():
     
     # GET request - show add form
     return render_template('add.html')
+
+
+@app.route('/admin/download-corrections')
+def download_corrections():
+    """Download the corrections log file. Hidden admin endpoint."""
+    from flask import send_file
+    
+    if not os.path.exists(CORRECTIONS_LOG):
+        return "No corrections log found", 404
+    
+    return send_file(
+        CORRECTIONS_LOG,
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f'corrections_log_{datetime.now().strftime("%Y%m%d")}.csv'
+    )
 
 
 if __name__ == '__main__':

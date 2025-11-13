@@ -15,6 +15,10 @@
         <h1>Edit Information</h1>
         <p class="subtitle">Update or correct details for {{ person_name }}</p>
         
+        <div class="disclaimer-box">
+            <strong>⚠️ Important:</strong> All changes will be logged for review and future integration into the database. Your corrections help improve the accuracy of our records.
+        </div>
+        
         <div class="form-box">
             <form method="POST" action="{{ url_for('edit_person', person_id=person_id) }}">
                 <div class="form-group">
@@ -129,8 +133,6 @@
                 <button type="submit" class="btn-primary">Save Changes</button>
             </form>
         </div>
-        
-        <p class="note">* All changes will be logged for review and future integration into the database.</p>
     </div>
 </body>
 </html>

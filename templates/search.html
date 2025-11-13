@@ -45,39 +45,52 @@
         <div class="error">{{ error }}</div>
         {% endif %}
         
-        {% if results %}
-        <div class="results">
-            <h2>Search Results ({{ results|length }} found)</h2>
-            
-            {% for person in results %}
-            <div class="result-item">
-                <a href="{{ url_for('person_detail', person_id=person.person_id) }}" class="person-link">
-                    <div class="person-name">{{ person.name }}</div>
-                    {% if person.years %}
-                    <div class="person-years">({{ person.years }})</div>
-                    {% endif %}
-                </a>
+        {% if results is defined %}
+            {% if results|length > 0 %}
+            <div class="results">
+                <h2>Search Results ({{ results|length }} found)</h2>
                 
-                <div class="affiliations">
-                    {% for aff in person.affiliations %}
-                    <div class="affiliation">
-                        {% if aff.student and aff.faculty %}
-                        🎓🏛️
-                        {% elif aff.student %}
-                        🎓
-                        {% elif aff.faculty %}
-                        🏛️
+                {% for person in results %}
+                <div class="result-item">
+                    <a href="{{ url_for('person_detail', person_id=person.person_id) }}" class="person-link">
+                        <div class="person-name">{{ person.name }}</div>
+                        {% if person.years %}
+                        <div class="person-years">({{ person.years }})</div>
                         {% endif %}
-                        {{ aff.school }}
-                        {% if aff.year %}
-                        ({{ aff.year }})
-                        {% endif %}
+                    </a>
+                    
+                    <div class="affiliations">
+                        {% for aff in person.affiliations %}
+                        <div class="affiliation">
+                            {% if aff.student and aff.faculty %}
+                            🎓🏛️
+                            {% elif aff.student %}
+                            🎓
+                            {% elif aff.faculty %}
+                            🏛️
+                            {% endif %}
+                            {{ aff.school }}
+                            {% if aff.year %}
+                            ({{ aff.year }})
+                            {% endif %}
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
+            {% else %}
+            <div class="no-results">
+                <h2>No Results Found</h2>
+                <p>No matches found for your search. Try:</p>
+                <ul>
+                    <li>Checking your spelling</li>
+                    <li>Using a different name variation</li>
+                    <li>Searching by university instead</li>
+                    <li><a href="{{ url_for('add_person') }}">Adding yourself to the database</a> if you're not listed</li>
+                </ul>
+            </div>
+            {% endif %}
         {% endif %}
     </div>
     

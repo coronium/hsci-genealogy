@@ -159,6 +159,25 @@ h3 {
     background: #3a6a6d;
 }
 
+.btn-back-to-search {
+    background: #488286;
+    color: white !important;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-family: inherit;
+    font-weight: 600;
+}
+
+.btn-back-to-search:hover {
+    background: #3a6a6d;
+    text-decoration: none;
+}
+
 .add-new-link {
     margin-top: 20px;
     text-align: center;
@@ -183,6 +202,74 @@ h3 {
     padding: 15px;
     border-radius: 5px;
     margin: 20px 0;
+}
+
+/* No Results */
+.no-results {
+    background: #f8f9fa;
+    border: 2px solid #b7d5d4;
+    padding: 30px;
+    border-radius: 8px;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.no-results h2 {
+    color: #305252;
+    margin-top: 0;
+}
+
+.no-results p {
+    font-size: 1.1em;
+    margin: 20px 0;
+}
+
+.no-results ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.no-results li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.no-results li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #488286;
+    font-weight: bold;
+}
+
+.no-results a {
+    color: #488286;
+    font-weight: 600;
+}
+
+.no-results a:hover {
+    text-decoration: underline;
+}
+
+/* Disclaimer Box */
+.disclaimer-box {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-left: 5px solid #ff9800;
+    color: #856404;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+    font-size: 1.05em;
+}
+
+.disclaimer-box strong {
+    color: #ff9800;
+    font-size: 1.1em;
 }
 
 /* Results */

@@ -15,6 +15,10 @@
         <h1>Add Yourself to the Database</h1>
         <p class="subtitle">If you're not in our database, please add your information here</p>
         
+        <div class="disclaimer-box">
+            <strong>⚠️ Important:</strong> All information submitted will be logged. Changes will be integrated into the main database after beeing reviewed.
+        </div>
+        
         <div class="form-box">
             <form method="POST" action="{{ url_for('add_person') }}">
                 <div class="form-group">
@@ -92,8 +96,6 @@
                 <button type="submit" class="btn-primary">Add to Database</button>
             </form>
         </div>
-        
-        <p class="note">* Your information will be logged and added to the database after the conference.</p>
     </div>
     
     <script>
