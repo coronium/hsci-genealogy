@@ -12,8 +12,8 @@
             <a href="{{ url_for('index') }}">← Back to Search</a>
         </div>
         
-        <h1>Add Yourself to the Database</h1>
-        <p class="subtitle">If you're not in our database, please add your information here</p>
+        <h1>Add a Dissertation to the Database</h1>
+        <p class="subtitle">Add any missing dissertations from our database</p>
         
         <div class="disclaimer-box">
             <strong>⚠️ Important:</strong> All information submitted will be logged. Changes will be integrated into the main database after beeing reviewed.
@@ -90,6 +90,14 @@
                               name="advisors" 
                               rows="4"
                               placeholder="e.g. John Smith (Advisor), Jane Doe (Committee Member), Bob Johnson (Chair)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="other">Other:</label>
+                    <textarea id="other" 
+                              name="other" 
+                              rows="4"
+                              placeholder="Any other information you would like to share"></textarea>
                 </div>
                 
                 <button type="submit" class="btn-primary">Add to Database</button>

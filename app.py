@@ -508,7 +508,9 @@ def search():
                     'person_id': person_id,
                     'name': person_row[0],
                     'years': person_row[1],
-                    'affiliations': affiliations
+                    'affiliations': affiliations,
+                    'advisors' : advisors,
+                    'students' : studnets
                 })
         
         results.sort(key=lambda x: x['name'])
@@ -627,7 +629,10 @@ def edit_person(person_id):
             'school': request.form.get('school', '').strip(),
             'department': request.form.get('department', '').strip(),
             'title': request.form.get('title', '').strip(),
-            'year': request.form.get('year', '').strip()
+            'year': request.form.get('year', '').strip(),
+            'advisors' : request.form.get('advisors', '').strip(),
+            'studnets' : request.form.get('students', '').strip(),
+            'other' : request.form.get('other', '').strip()
         }
         
         # Log the correction
@@ -693,7 +698,9 @@ def add_person():
             'school': request.form.get('school', '').strip(),
             'department': request.form.get('department', '').strip(),
             'title': request.form.get('title', '').strip(),
-            'year': request.form.get('year', '').strip()
+            'year': request.form.get('year', '').strip(),
+            'advisors' : request.form.get('advisors', '').strip(),
+            'other' : request.form.get('other', '').strip()
         }
         
         # Generate a temporary person_id
