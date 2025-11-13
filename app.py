@@ -508,9 +508,7 @@ def search():
                     'person_id': person_id,
                     'name': person_row[0],
                     'years': person_row[1],
-                    'affiliations': affiliations,
-                    'advisors' : advisors,
-                    'students' : studnets
+                    'affiliations': affiliations
                 })
         
         results.sort(key=lambda x: x['name'])
